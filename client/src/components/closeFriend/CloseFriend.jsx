@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+  import { useEffect, useState } from "react";
 import "./closeFriend.css";
 import axios from "axios";
 
@@ -8,7 +8,7 @@ export default function CloseFriend({user}) {
   
   useEffect(() => { //adds names of friends to sidebar
     const addName = async () => {
-      const userInfo = (await axios.get(`users/?userID=${user}`)).data;
+      const userInfo = (await axios.get(`/users/?userID=${user}`)).data;
       // console.log(userInfo);
       setName(userInfo.username);
     };

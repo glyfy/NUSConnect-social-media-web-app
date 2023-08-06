@@ -24,6 +24,7 @@ export default function Sidebar() {
         <hr className="sidebarHr"/>
         <ul className="sidebarFriendList">
           <div className="sidebarFriendListHeader">Friends</div>
+          {/* {console.log(user.following)} */}
           {user.following.map(u => 
             <CloseFriend key={u._id} user={u}/>  
           )}

@@ -9,9 +9,9 @@ const root = ReactDOM.createRoot(
 
 //AuthContextProvider function takes App as argument
 root.render(
-   <React.StrictMode>
+  //  <React.StrictMode>
      <AuthContextProvider> 
       <App />
      </AuthContextProvider>
-  </React.StrictMode> 
+  // </React.StrictMode> 
 )

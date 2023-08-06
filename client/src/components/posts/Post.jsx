@@ -13,9 +13,9 @@ export default function Post({post}) {
     const [isLiked, setIsLiked] = useState(false); //control how many times user can like a post
     const [user, setUser] = useState({});
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-    const {user: currentUser} = useContext(AuthContext);
+    const {user: currentUser, dispatch} = useContext(AuthContext);
     const firebaseUser = useAuth();
-    
+
     useEffect(() => { //set the user for this post
         const fetchUser = async () => { //async function can only be declared inside main function
           const res = await axios.get(`/users/?userID=${post.userID}`);

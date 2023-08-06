@@ -12,8 +12,8 @@ const INITIAL_STATE = {
 export const AuthContext = createContext(INITIAL_STATE);
 
 export const AuthContextProvider = ({children}) => { //children here is what it wraps 
-    //dispatch function sends data to given reducer
-    //useReducer sets the state using our predefined INITIAL_STATE
+    //dispatch function sends data to given reducer(AuthReducer), where the action is parsed and state updated accordingly
+    //useReducer sets the state to predefined INITIAL_STATE
     const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
     
     useEffect(()=>{ //place user state into localstorage
@@ -21,7 +21,7 @@ export const AuthContextProvider = ({children}) => { //children here is what it 
       }, [state.user]) 
 
     return ( 
-        <AuthContext.Provider value= {{ //this is the data available in the Context
+        <AuthContext.Provider value= {{ //Context stores all the below data + dispatch function such that it can be accessed from anywhere
             user: state.user,
             isFetching: state.isFetching,
             error: state.error,

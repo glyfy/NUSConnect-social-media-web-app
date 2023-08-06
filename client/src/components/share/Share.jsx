@@ -3,37 +3,45 @@ import {PermMedia, Label, Room, EmojiEmotions , Cancel} from "@mui/icons-materia
 import { AuthContext } from "../../context/AuthContext";
 import { useContext, useRef, useState } from "react";
 import axios from "axios";
-import { useAuth } from "../../firebase";
+import { useAuth, upload } from "../../firebase";
 export default function Share() {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const {user} = useContext(AuthContext);
     const desc = useRef(); //text that user wants to share
     const [file, setFile] = useState(null);
+    const [loading, setLoading] = useState(false);
     const  firebaseUser = useAuth();
-    const submitHandler = async (e) => { //creates new post for user
+    // const submitHandler = async (e) => { //creates new post for user
+    //     e.preventDefault();
+    //     // const newPost = {
+    //     //     userID: user._id,
+    //     //     desc: desc.current.value //uses the reference JSX element
+    //     // };
+    //     // if(file){
+    //     //     const data = new FormData();
+    //     //     const fileName = Date.now() + file.name;
+    //     //     data.append("name", fileName);
+    //     //     // add uploaded file
+    //     //     data.append("file", file);
+    //     //     newPost.img = fileName;
+    //     //     try{
+    //     //         await axios.post("upload", data)
+    //     //     } catch(err){
+    //     //         console.log(err);
+    //     //     }
+    //     // }
+    //     // try{
+    //     //     await axios.post("posts", newPost);
+    //     //     window.location.reload();
+    //     // } catch(err) {
+    //     //     console.log(err);
+    //     // }
+    // }
+     
+    const handleUpload = async (e) => { // upload photo to firebase
         e.preventDefault();
-        const newPost = {
-            userID: user._id,
-            desc: desc.current.value //uses the reference JSX element
-        };
-        if(file){
-            const data = new FormData();
-            const fileName = Date.now() + file.name;
-            data.append("name", fileName);
-            data.append("file", file);
-            newPost.img = fileName;
-            try{
-                await axios.post("upload", data)
-            } catch(err){
-                console.log(err);
-            }
-        }
-        try{
-            await axios.post("posts", newPost);
-            window.location.reload();
-        } catch(err) {
-            console.log(err);
-        }
+        await upload(file, firebaseUser, setLoading);
+        window.location.reload()
     }
     
     return (
@@ -61,7 +69,7 @@ export default function Share() {
                     <Cancel className="shareCancelImg" onClick={() => setFile(null)}/>
                 </div>
             )}
-            <form className="shareBottom" onSubmit={submitHandler}>
+            <form className="shareBottom" onSubmit = {handleUpload}>
                 <div className="shareOptions">
                     <label htmlFor="file" className="shareOption">
                         <PermMedia htmlColor="red" className="shareIcon"/>
@@ -90,6 +98,7 @@ export default function Share() {
                 </div>
                 <button className="shareButton" type="submit">Share</button>
             </form>
+
         </div>
     </div>
   )

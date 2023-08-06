@@ -44,9 +44,13 @@ export default function Feed({username, searchQuery}) {
         const res = await axios.get("/users/search/" + searchQuery);
         const filtered_users = res.data.filter(user => user._id !== currentUser._id); //filter out currentUser
         setUsers(filtered_users);
+        // console.log("useffect is being called")
       }
       getUsers();
-    }, [])
+      return () => {
+        setUsers([]);
+      }
+    }, [searchQuery])
     return (
       users?.map((user) => 
         <FriendResult key={user._id} user={user}/>
@@ -58,6 +62,7 @@ export default function Feed({username, searchQuery}) {
       <div className="feed">
         <div className="feedWrapper">
           {!searchQuery ? <NormalFeed username={username}/> : <SearchFeed searchQuery={searchQuery}/>}
+          {/* {<SearchFeed searchQuery={searchQuery}/>} */}
         </div>
       </div>
   )

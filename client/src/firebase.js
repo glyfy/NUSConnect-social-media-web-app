@@ -33,7 +33,7 @@ export function logout() {
 }
 
 // Custom Hook
-export function useAuth() {
+export function useAuth() { // hook generates a firebase user object and updates it when it detects change
   const [currentUser, setCurrentUser] = useState();
 
   useEffect(() => {
@@ -56,6 +56,21 @@ export async function upload(file, currentUser, setLoading) {
 
   updateProfile(currentUser, {photoURL});
   
+  setLoading(false);
+  alert("Uploaded file!");
+}
+
+// Store profile picture
+export async function storePFP(file, currentUser, setLoading) {
+  console.log(file);
+  const fileRef = ref(storage, currentUser.uid + file.name);
+
+  setLoading(true);
+  
+  const snapshot = await uploadBytes(fileRef, file);
+  const photoURL = await getDownloadURL(fileRef); 
+
+  // updateProfile(currentUser, {photoURL});
   setLoading(false);
   alert("Uploaded file!");
 }

@@ -6,12 +6,14 @@ export const loginCall = async (userCredential, dispatch) => {
     dispatch(LoginStart()); 
     try {
         console.log(axios.defaults.baseURL);
-        const res = await axios.post("auth/login", userCredential);
+        const res = await axios.post("/auth/login", userCredential);
         dispatch(LoginSuccess(res.data));
         return "success";
     } catch(err) {
         dispatch(LoginFailure(err));
+        const a = 1;
         return err.response.data;
+
     }
 }
 

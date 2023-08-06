@@ -14,11 +14,11 @@ export default function Profile() {
     const [user, setUser] = useState({});
     const username = useParams().username;
     const firebaseUser = useAuth();
-    console.log(firebaseUser);
+    // console.log(firebaseUser);
 
     useEffect(() => { //action that occurs after you render the page
         const fetchUser = async () => { //async function can only be declared inside main function
-            const res = await axios.get(`users/?username=${username}`);
+            const res = await axios.get(`/users/?username=${username}`);
             // console.log(res);
             setUser(res.data); //update the state and re-render the page
         }

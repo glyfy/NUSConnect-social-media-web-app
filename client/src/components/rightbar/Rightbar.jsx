@@ -22,6 +22,7 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
   useEffect(()=> { //obtain all of user's friends 
     const getFriends = async () => {
       try{
+        console.log(user)
         const friendList = await axios("/users/friends/" + user?._id);
         setFriends(friendList.data);
       } catch(err){
@@ -75,106 +76,106 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
   // }
   
   //rightbar will differ based off what page you are on
-  const HomeRightBar = () => {
-    const [conversations, setConversations] = useState([]);
-    const [currentChat, setCurrentChat] = useState(null);
-    const [messages, setMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState("");
-    const [arrivalMessage, setArrivalMessage] = useState(null);
-    const [onlineUsers, setOnlineUsers] = useState([]);
-    const socket = useRef(); //create reusable socket element
-    const {user} = useContext(AuthContext);
-    const scrollRef = useRef();
+  const HomeRightBar = () => {  
+    // const [conversations, setConversations] = useState([]);
+    // const [currentChat, setCurrentChat] = useState(null);
+    // const [messages, setMessages] = useState([]);
+    // const [newMessage, setNewMessage] = useState("");
+    // const [arrivalMessage, setArrivalMessage] = useState(null);
+    // const [onlineUsers, setOnlineUsers] = useState([]);
+    // const socket = useRef(); //create reusable socket element
+    // const {user} = useContext(AuthContext);
+    // const scrollRef = useRef();
 
-    useEffect(() => {
-        socket.current = io("ws://localhost:8900");
-        //socket.current = io("wss://nusconnectm2.herokuapp.com")
-        socket.current.on("getMessage", (data) => {
-            setArrivalMessage({
-                sender: data.senderId,
-                text: data.text,
-                createdAt: Date.now(),
-            });
-        });
-    }, []);
+    // useEffect(() => {
+    //     socket.current = io("ws://localhost:8900");
+    //     socket.current = io("wss://nusconnectm2.herokuapp.com")
+    //     socket.current.on("getMessage", (data) => {
+    //         setArrivalMessage({
+    //             sender: data.senderId,
+    //             text: data.text,
+    //             createdAt: Date.now(),
+    //         });
+    //     });
+    // }, []);
 
-    useEffect(() => {
-        arrivalMessage && 
-            currentChat?.members.includes(arrivalMessage.sender) && 
-            setMessages((prev) => [...prev, arrivalMessage]);
-    }, [arrivalMessage, currentChat])
+    // useEffect(() => {
+    //     arrivalMessage && 
+    //         currentChat?.members.includes(arrivalMessage.sender) && 
+    //         setMessages((prev) => [...prev, arrivalMessage]);
+    // }, [arrivalMessage, currentChat])
 
-    useEffect(() => {
-        socket.current.emit("addUser", user._id);
-        socket.current.on("getUsers", users => {
-            setOnlineUsers(user.following.filter( (f) => users.some((u) => u.userId === f)));
-        })
-    }, [user]);
+    // useEffect(() => {
+    //     socket.current.emit("addUser", user._id);
+    //     socket.current.on("getUsers", users => {
+    //         setOnlineUsers(user.following.filter( (f) => users.some((u) => u.userId === f)));
+    //     })
+    // }, [user]);
 
-    useEffect(() => {
-        const getConversations = async () => {
-            try{
-                const res = await axios.get("/conversations/" + user._id);
-                setConversations(res.data); 
-            } catch(err) {
-                console.log(err);
-            }
-        };
-        getConversations();
-    }, [user._id]);
+    // useEffect(() => {
+    //     const getConversations = async () => {
+    //         try{
+    //             const res = await axios.get("/conversations/" + user._id);
+    //             setConversations(res.data); 
+    //         } catch(err) {
+    //             console.log(err);
+    //         }
+    //     };
+    //     getConversations();
+    // }, [user._id]);
 
-    useEffect(() => {
-        const getMessages = async () => {
-            try{
-                const res = await axios.get("/messages/" + currentChat?._id);
-                setMessages(res.data);
-            } catch(err) {
-                console.log(err);
-            }
-        };
-        getMessages();
-    }, [currentChat]);
+    // useEffect(() => {
+    //     const getMessages = async () => {
+    //         try{
+    //             const res = await axios.get("/messages/" + currentChat?._id);
+    //             setMessages(res.data);
+    //         } catch(err) {
+    //             console.log(err);
+    //         }
+    //     };
+    //     getMessages();
+    // }, [currentChat]);
 
-    const handleSubmit = async (e) =>{
-        e.preventDefault();
-        const message = {
-            sender: user._id,
-            text: newMessage,
-            conversationId: currentChat._id,
-        };
+    // const handleSubmit = async (e) =>{
+    //     e.preventDefault();
+    //     const message = {
+    //         sender: user._id,
+    //         text: newMessage,
+    //         conversationId: currentChat._id,
+    //     };
 
-        const receiverId = currentChat.members.find(member => member !== user._id)      
-        socket.current.emit("sendMessage", {
-            senderId: user._id,
-            receiverId, 
-            text: newMessage,
-        });
+    //     const receiverId = currentChat.members.find(member => member !== user._id)      
+    //     socket.current.emit("sendMessage", {
+    //         senderId: user._id,
+    //         receiverId, 
+    //         text: newMessage,
+    //     });
 
-        try{
-            const res = await axios.post("/messages", message);
-            setMessages([...messages, res.data]);
-            setNewMessage("");
-        } catch(err) {
-            console.log(err);
-        }
-    };
+    //     try{
+    //         const res = await axios.post("/messages", message);
+    //         setMessages([...messages, res.data]);
+    //         setNewMessage("");
+    //     } catch(err) {
+    //         console.log(err);
+    //     }
+    // };
 
 
-    return(
-      <>
-        <div className="birthdayContainer">
-          <span className="birthdayText"></span>
-        </div>
-        <h4 className="rightbarTitle">Online friends</h4>
-        <ul className="rightbarFriendList">
-        <div className="chatOnline">
-            <div className="chatOnlineWrapper">
-                <ChatOnline onlineUsers = {onlineUsers} currentId = {user._id} setCurrentChat = {setCurrentChat}/>
-            </div>
-        </div>
-        </ul>
-      </>
-    )
+    // return(
+    //   <>
+    //     <div className="birthdayContainer">
+    //       <span className="birthdayText"></span>
+    //     </div>
+    //     <h4 className="rightbarTitle">Online friends</h4>
+    //     <ul className="rightbarFriendList">
+    //     <div className="chatOnline">
+    //         <div className="chatOnlineWrapper">
+    //             <ChatOnline onlineUsers = {onlineUsers} currentId = {user._id} setCurrentChat = {setCurrentChat}/>
+    //         </div>
+    //     </div>
+    //     </ul>
+    //   </>
+    // )
   }
 
   const ProfileRightBar = () => {
@@ -189,7 +190,7 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
       }
     }
   
-    function handleUpload() { //
+    function handleUpload() { // upload photo to firebase
       console.log(firebaseUser);
       upload(photo, firebaseUser, setLoading);
     }
