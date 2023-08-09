@@ -20,7 +20,7 @@ export default function FriendResult({ user }) {
                 <img
                   src={
                     user.profilePicture
-                      ? PF + user.profilePicture
+                      ? user.profilePicture
                       : PF + "noProfilePic.jpg"
                   }
                   alt=""

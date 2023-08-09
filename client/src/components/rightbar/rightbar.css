@@ -60,9 +60,9 @@
 }
 
 .rightbarFollowings{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .rightbarFollowing{
@@ -71,6 +71,7 @@
     margin-bottom: 20px;
     cursor: pointer;
 }
+
 .rightbarFollowingImg{
     width: 100px;
     height: 100px;

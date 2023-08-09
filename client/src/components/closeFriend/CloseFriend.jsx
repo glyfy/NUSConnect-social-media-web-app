@@ -2,27 +2,26 @@
 import "./closeFriend.css";
 import axios from "axios";
 
-export default function CloseFriend({user}) {
+export default function CloseFriend({userID}) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  const [name, setName] = useState("");
+  const [user, setUser] = useState({});
   
   useEffect(() => { //adds names of friends to sidebar
-    const addName = async () => {
-      const userInfo = (await axios.get(`/users/?userID=${user}`)).data;
-      // console.log(userInfo);
-      setName(userInfo.username);
+    const fetchUser = async () => {
+      const res = (await axios.get(`/users/?userID=${userID}`)).data;
+      setUser(res);
     };
-    addName();
-  }, [name]);
+    fetchUser();
+  }, []);
   
   return (
     <li className="sidebarFriend">
         <img 
           className="sidebarFriendImg" 
-          src = { user.profilePicture ? PF + user.profilePicture: PF + "noProfilePic.jpg" } 
+          src = { user.profilePicture ? user.profilePicture: PF + "noProfilePic.jpg" } 
           alt="" 
         />
-        <span className="sidebarFriendName"> {name ? name : null} </span>
+        <span className="sidebarFriendName"> {user.username} </span>
         
     </li> 
   )

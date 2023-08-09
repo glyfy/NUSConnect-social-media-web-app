@@ -21,7 +21,7 @@ const session = require('express-session');
 
 
 dotenv.config();
-mongoose.connect(process.env.MONGO_URL, 
+mongoose.connect( process.env.MONGO_URL, 
   {useNewURLParser: true}, 
   () => {
     console.log("Connected to MongoDB");

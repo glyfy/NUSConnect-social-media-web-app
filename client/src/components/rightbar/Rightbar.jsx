@@ -8,12 +8,14 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import {Add, Remove, FileUpload} from "@mui/icons-material";
 import EditProfile from "../editProfile/EditProfile";
-import { useAuth, upload } from "../../firebase";
+import { useAuth, uploadPFP } from "../../firebase";
 
 export default function Rightbar({user}) { //user refers to user that rightbar is being generated for
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [friends, setFriends] = useState([]);
   const {user: currentUser, dispatch} = useContext(AuthContext);
+  console.log(user)
+  // console.log(currentUser)
   const [followed,  setFollowed] = useState(false);
   const [city, setCity] = useState("");
   const [course, setCourse] = useState("");
@@ -22,8 +24,8 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
   useEffect(()=> { //obtain all of user's friends 
     const getFriends = async () => {
       try{
-        console.log(user)
-        const friendList = await axios("/users/friends/" + user?._id);
+        // console.log(user)
+        const friendList = await axios("/users/friends/" + user._id);
         setFriends(friendList.data);
       } catch(err){
         console.log(err);
@@ -49,133 +51,24 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
     }
   }, [user, currentUser])
   
-  const handleClick = async () => {//function that handles clicking of follow button
-    console.log(user);
-
+  const handleClick = async () => { //function that handles clicking of follow button
+    // console.log(user);
     try{
       if(followed){
-        await axios.put("users/"+ user._id + "/unfollow", {
+        await axios.put("/users/"+ user._id + "/unfollow", {
           userID: currentUser._id
         })
         dispatch({type:"UNFOLLOW", payload: user._id})
       } else {
-        await axios.put("users/"+ user._id + "/follow", {
+        await axios.put("/users/"+ user._id + "/follow", {
           userID: currentUser._id
         })
         dispatch({type:"FOLLOW", payload: user._id})
       }
       setFollowed(!followed);
-    }catch(err){
+    } catch(err){
       console.log(err);
     }
-    
-  }
-
-  // const handleProfile = () => {
-
-  // }
-  
-  //rightbar will differ based off what page you are on
-  const HomeRightBar = () => {  
-    // const [conversations, setConversations] = useState([]);
-    // const [currentChat, setCurrentChat] = useState(null);
-    // const [messages, setMessages] = useState([]);
-    // const [newMessage, setNewMessage] = useState("");
-    // const [arrivalMessage, setArrivalMessage] = useState(null);
-    // const [onlineUsers, setOnlineUsers] = useState([]);
-    // const socket = useRef(); //create reusable socket element
-    // const {user} = useContext(AuthContext);
-    // const scrollRef = useRef();
-
-    // useEffect(() => {
-    //     socket.current = io("ws://localhost:8900");
-    //     socket.current = io("wss://nusconnectm2.herokuapp.com")
-    //     socket.current.on("getMessage", (data) => {
-    //         setArrivalMessage({
-    //             sender: data.senderId,
-    //             text: data.text,
-    //             createdAt: Date.now(),
-    //         });
-    //     });
-    // }, []);
-
-    // useEffect(() => {
-    //     arrivalMessage && 
-    //         currentChat?.members.includes(arrivalMessage.sender) && 
-    //         setMessages((prev) => [...prev, arrivalMessage]);
-    // }, [arrivalMessage, currentChat])
-
-    // useEffect(() => {
-    //     socket.current.emit("addUser", user._id);
-    //     socket.current.on("getUsers", users => {
-    //         setOnlineUsers(user.following.filter( (f) => users.some((u) => u.userId === f)));
-    //     })
-    // }, [user]);
-
-    // useEffect(() => {
-    //     const getConversations = async () => {
-    //         try{
-    //             const res = await axios.get("/conversations/" + user._id);
-    //             setConversations(res.data); 
-    //         } catch(err) {
-    //             console.log(err);
-    //         }
-    //     };
-    //     getConversations();
-    // }, [user._id]);
-
-    // useEffect(() => {
-    //     const getMessages = async () => {
-    //         try{
-    //             const res = await axios.get("/messages/" + currentChat?._id);
-    //             setMessages(res.data);
-    //         } catch(err) {
-    //             console.log(err);
-    //         }
-    //     };
-    //     getMessages();
-    // }, [currentChat]);
-
-    // const handleSubmit = async (e) =>{
-    //     e.preventDefault();
-    //     const message = {
-    //         sender: user._id,
-    //         text: newMessage,
-    //         conversationId: currentChat._id,
-    //     };
-
-    //     const receiverId = currentChat.members.find(member => member !== user._id)      
-    //     socket.current.emit("sendMessage", {
-    //         senderId: user._id,
-    //         receiverId, 
-    //         text: newMessage,
-    //     });
-
-    //     try{
-    //         const res = await axios.post("/messages", message);
-    //         setMessages([...messages, res.data]);
-    //         setNewMessage("");
-    //     } catch(err) {
-    //         console.log(err);
-    //     }
-    // };
-
-
-    // return(
-    //   <>
-    //     <div className="birthdayContainer">
-    //       <span className="birthdayText"></span>
-    //     </div>
-    //     <h4 className="rightbarTitle">Online friends</h4>
-    //     <ul className="rightbarFriendList">
-    //     <div className="chatOnline">
-    //         <div className="chatOnlineWrapper">
-    //             <ChatOnline onlineUsers = {onlineUsers} currentId = {user._id} setCurrentChat = {setCurrentChat}/>
-    //         </div>
-    //     </div>
-    //     </ul>
-    //   </>
-    // )
   }
 
   const ProfileRightBar = () => {
@@ -190,16 +83,16 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
       }
     }
   
-    function handleUpload() { // upload photo to firebase
-      console.log(firebaseUser);
-      upload(photo, firebaseUser, setLoading);
+    const handleUpload = async(e) =>  { 
+      // upload photo to firebase
+      const pfpURL = await uploadPFP(photo, firebaseUser, setLoading);
+      // upload URL to mongoDB
+      await axios.put("/users/"+ user._id, { 
+        userID: currentUser._id,
+        profilePicture: pfpURL
+      });
     }
 
-    useEffect(() => { //set photo URL
-      if (firebaseUser?.photoURL) {
-        setPhotoURL(firebaseUser.photoURL);
-      }
-    }, [firebaseUser])
 
     return (
       <>
@@ -210,10 +103,6 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
         </button>
       )}
       
-      {/* <div className="fields">
-        <input type="file" onChange={handleChange} />
-        <button disabled={loading || !photo} onClick={handleUpload}>Upload</button>
-      </div> */}
       <label htmlFor="files" className="uploadPhoto">
         <FileUpload className="shareIcon"/>
         <span className="shareOptionText">Upload profile picture</span>
@@ -252,7 +141,7 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
             <div className="rightbarFollowing">
               <img src = {
                     friend.profilePicture
-                    ? PF + friend.profilePicture
+                    ? friend.profilePicture
                     : PF + "noProfilePic.jpg"
                   } 
                   alt="" 
@@ -270,7 +159,7 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
   return (
     <div className="rightbar">
       <div className="rightbarWrapper">
-        {user ? <ProfileRightBar/>: <HomeRightBar/>}
+        {user ? <ProfileRightBar/>: null}
       </div>
     </div>
   )

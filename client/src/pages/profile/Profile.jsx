@@ -14,12 +14,10 @@ export default function Profile() {
     const [user, setUser] = useState({});
     const username = useParams().username;
     const firebaseUser = useAuth();
-    // console.log(firebaseUser);
 
     useEffect(() => { //action that occurs after you render the page
-        const fetchUser = async () => { //async function can only be declared inside main function
+        const fetchUser = async () => { // async function can only be declared inside main function
             const res = await axios.get(`/users/?username=${username}`);
-            // console.log(res);
             setUser(res.data); //update the state and re-render the page
         }
         fetchUser();
@@ -33,8 +31,8 @@ export default function Profile() {
         <div className="profileRight">
             <div className="profileRightTop">
                 <div className="profileCover">
-                    <img src= {firebaseUser?.photoURL ? firebaseUser.photoURL : PF + "noCover.jpg"} alt="" className="profileCoverImg" />
-                    <img src= {firebaseUser?.photoURL ? firebaseUser.photoURL : PF + "noProfilePic.jpg"} alt="" className="profileUserImg" />
+                    <img src= {user.profilePicture ? user.profilePicture : PF + "noCover.jpg"} alt="" className="profileCoverImg" />
+                    <img src= {user.profilePicture ? user.profilePicture : PF + "noProfilePic.jpg"} alt="" className="profileUserImg" />
                 </div>
             </div>
             <div className="profileInfo">

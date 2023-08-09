@@ -62,7 +62,6 @@ export default function Feed({username, searchQuery}) {
       <div className="feed">
         <div className="feedWrapper">
           {!searchQuery ? <NormalFeed username={username}/> : <SearchFeed searchQuery={searchQuery}/>}
-          {/* {<SearchFeed searchQuery={searchQuery}/>} */}
         </div>
       </div>
   )

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import axios from "axios";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -45,10 +46,26 @@ export function useAuth() { // hook generates a firebase user object and updates
 }
 
 // Storage
-export async function upload(file, currentUser, setLoading) {
+export async function uploadPost(file, currentUser, setLoading) {
   console.log(file);
   const fileRef = ref(storage, currentUser.uid + file.name);
+  // upload fileref to mongoDB under posts
+  setLoading(true);
+  
+  const snapshot = await uploadBytes(fileRef, file);
+  const photoURL = await getDownloadURL(fileRef);
+  console.log(photoURL)
+  updateProfile(currentUser, {photoURL});
+  
+  setLoading(false);
+  alert("Uploaded file!");
+  return photoURL;
+}
 
+export async function uploadPFP(file, currentUser, setLoading) {
+  console.log(file);
+  const fileRef = ref(storage, currentUser.uid + file.name);
+  // upload fileref to mongoDB
   setLoading(true);
   
   const snapshot = await uploadBytes(fileRef, file);
@@ -58,19 +75,5 @@ export async function upload(file, currentUser, setLoading) {
   
   setLoading(false);
   alert("Uploaded file!");
-}
-
-// Store profile picture
-export async function storePFP(file, currentUser, setLoading) {
-  console.log(file);
-  const fileRef = ref(storage, currentUser.uid + file.name);
-
-  setLoading(true);
-  
-  const snapshot = await uploadBytes(fileRef, file);
-  const photoURL = await getDownloadURL(fileRef); 
-
-  // updateProfile(currentUser, {photoURL});
-  setLoading(false);
-  alert("Uploaded file!");
+  return photoURL;
 }

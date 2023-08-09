@@ -16,6 +16,13 @@ export default function Post({post}) {
     const {user: currentUser, dispatch} = useContext(AuthContext);
     const firebaseUser = useAuth();
 
+    
+    useEffect(() => { //ensures that setIsLiked is updated to correct status after post is rendered
+        setIsLiked(post.likes.includes(currentUser._id))
+        }, 
+        [currentUser._id, post.likes]
+    )
+
     useEffect(() => { //set the user for this post
         const fetchUser = async () => { //async function can only be declared inside main function
           const res = await axios.get(`/users/?userID=${post.userID}`);
@@ -25,11 +32,6 @@ export default function Post({post}) {
       }, [post.userID] //second argument lets you choose what variable change trigger the effect
     ) 
 
-    useEffect(() => { //ensures that setIsLiked is updated to correct status after post is rendered
-        setIsLiked(post.likes.includes(currentUser._id))
-        }, 
-        [currentUser._id, post.likes]
-    )
     const likeHandler = () => {
         try {
             axios.put("/posts/" + post._id + "/like", { userID: currentUser._id })
@@ -45,9 +47,9 @@ export default function Post({post}) {
         <div className="postWrapper">
             <div className="postTop">
                 <div className="postTopLeft">
-                    <Link to={"profile/" + user.username}>
+                    <Link to={"/profile/" + user.username}>
                     <img src={user.profilePicture ? 
-                            PF + user.profilePicture : 
+                            user.profilePicture : 
                             PF + "noProfilePic.jpg"
                         } 
                     alt="" className="postProfileImg" />
@@ -61,7 +63,7 @@ export default function Post({post}) {
             </div>
             <div className="postCenter">
                 <span className="postText">{post?.desc}</span>
-                <img src={PF + post.img} alt="" className="postImg" />
+                <img src={post.downloadURL} alt="" className="postImg" />
             </div>
             <div className="postBottom">
                 <div className="postBottomLeft">

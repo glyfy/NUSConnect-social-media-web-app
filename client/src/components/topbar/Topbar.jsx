@@ -46,20 +46,6 @@ function Topbar() {
                     {/* <span className="topbarLink">Home</span> */}
                     {/* <span className="topbarLink">Timeline</span> */}
                 </div>
-                <div className="topbarIcons">
-                    {/* <div className="topbarIconItem">
-                        <Person/>
-                        <span className="topbarIconBadge">2</span>
-                    </div> */}
-                    <div className="topbarIconItem" onClick={() => history.push("/messenger")}>      
-                        <Chat/>
-                        {/* <span className="topbarIconBadge"></span> */}
-                    </div>
-                    {/* <div className="topbarIconItem">
-                        <Notifications/>
-                        <span className="topbarIconBadge">3</span>
-                    </div> */}
-                </div>
                 <div 
                     className="logOutButton"
                     onClick={handleLogOut}
