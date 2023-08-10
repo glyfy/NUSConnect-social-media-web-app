@@ -35,8 +35,8 @@ app.use(express.json());
 //create sessions
 app.use(cors({
   origin:
-  //"https://nusconnectm2.herokuapp.com/",
-   "http://localhost:3000",
+  ["nusconnect-frontend.vercel.app"],
+  //  "http://localhost:3000",
   methods:["GET", "POST", "PUT"],
   credentials: true
 }))
@@ -64,22 +64,22 @@ app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute);
 
 //uploading files to server
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/images"); //target folder for uploading files
-  },
-  filename: (req, file, cb) => {
-    cb(null, req.body.name);
-  }
-})
-const upload = multer({storage});
-app.post("/api/upload", upload.single("file"), (req, res) => {
-  try {
-    return res.status(200).json("File uploaded successfully");
-  } catch(err){   
-    console.log(err);   
-  }
-});
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "public/images"); //target folder for uploading files
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, req.body.name);
+//   }
+// })
+// const upload = multer({storage});
+// app.post("/api/upload", upload.single("file"), (req, res) => {
+//   try {
+//     return res.status(200).json("File uploaded successfully");
+//   } catch(err){   
+//     console.log(err);   
+//   }
+// });
 
 //heroku deployment
 app.use(express.static(path.join(__dirname, "/client/build")));
