@@ -5,5 +5,5 @@ import axios from "axios";
 // axios.defaults.baseURL = "https://nusconnectm2.herokuapp.com/api/"
 // axios.defaults.baseURL = "http://localhost:5000/api/"; 
  
-axios.defaults.baseURL = "https://nusconnect-backend.vercel.app"
+// axios.defaults.baseURL = "https://nusconnect-backend.vercel.app"
 
