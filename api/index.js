@@ -35,7 +35,7 @@ app.use(express.json());
 //create sessions
 app.use(cors({
   origin:
-  ["https://nusconnect-frontend.vercel.app/"],
+  ["https://nusconnect-frontend.vercel.app"],
   methods:["GET", "POST", "PUT"],
   credentials: true
 }))
