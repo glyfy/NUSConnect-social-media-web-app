@@ -6,6 +6,8 @@ export const loginCall = async (userCredential, dispatch) => {
     dispatch(LoginStart()); 
     try {
         const res = await axios.post("/auth/login", userCredential);
+        console.log(axios.defaults.baseURL);
+        console.log(res.config.url);
         dispatch(LoginSuccess(res.data));
         return "success";
     } catch(err) {
