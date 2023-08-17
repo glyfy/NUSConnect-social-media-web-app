@@ -1,5 +1,6 @@
   import { useEffect, useState } from "react";
 import "./closeFriend.css";
+import { axiosInstance } from "../../config";
 import axios from "axios";
 
 export default function CloseFriend({userID}) {
