@@ -9,6 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useState, useContext, useRef } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
+import {axiosInstance} from "../../config";
 import { editProfile } from '../../apiCalls';
 import { StarOutlineSharp } from '@mui/icons-material';
 

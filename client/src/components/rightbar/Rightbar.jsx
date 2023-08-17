@@ -4,6 +4,7 @@ import {useEffect, useState, useContext, useRef} from "react";
 import {io} from "socket.io-client";
 import ChatOnline from "../chatOnline/ChatOnline";
 import axios from "axios";
+import {axiosInstance} from "../../config";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import {Add, Remove, FileUpload} from "@mui/icons-material";
