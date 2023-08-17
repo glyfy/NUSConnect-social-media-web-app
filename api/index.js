@@ -81,11 +81,6 @@ app.use("/api/messages", messageRoute);
 //   }
 // });
 
-//heroku deployment
-app.use(express.static(path.join(__dirname, "/client/build")));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
-});
 
 //get backend running
 var listener = app.listen(port, function(){
