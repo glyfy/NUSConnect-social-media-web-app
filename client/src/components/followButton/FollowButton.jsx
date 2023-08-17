@@ -20,17 +20,17 @@ export default function FollowButton({user}) {
         // console.log(user);
         try{
           if(followed){
-            await axios.put("/users/"+ user?._id + "/unfollow", { //unfollow user
+            await axiosInstance.put("/users/"+ user?._id + "/unfollow", { //unfollow user
               userID: currentUser._id
             })
             dispatch({type:"UNFOLLOW", payload: user?._id}) //dispatch unfollow action to Context
             setFollowed(!followed)
           } else {
-            await axios.post("/conversations", { //create new conversation
+            await axiosInstance.post("/conversations", { //create new conversation
               senderId: currentUser._id,
               receiverId: user?._id
             })
-            await axios.put("/users/"+ user._id + "/follow", { //follow user  
+            await axiosInstance.put("/users/"+ user._id + "/follow", { //follow user  
               userID: currentUser._id
             })
             dispatch({type:"FOLLOW", payload: user._id}) //dispatch follow action to Context

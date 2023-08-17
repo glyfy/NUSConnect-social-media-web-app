@@ -28,7 +28,7 @@ export default function EditProfile() {
   };
 
   const handleSave = async () => {
-    const res = await axios.post("/users/changeinfo", //update new user details to mongoDB 
+    const res = await axiosInstance.post("/users/changeinfo", //update new user details to mongoDB 
     {
       email: user.email,
       newCity: city.current.value,
