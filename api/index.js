@@ -62,6 +62,9 @@ app.use("/api/posts", postRoute);
 app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute);
 
+app.get("/", (req, res) => {
+  res.send({ message: "Hello World!" });
+});
 //uploading files to server
 // const storage = multer.diskStorage({
 //   destination: (req, file, cb) => {
