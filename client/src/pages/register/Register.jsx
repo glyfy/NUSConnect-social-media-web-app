@@ -28,7 +28,7 @@ export default function Register() {
             }
             try {
                 // add user to mongoDB
-                const res = await axios.post("/auth/register", user);     
+                const res = await axiosInstance.post("/auth/register", user);     
                 history.push("/login");
                 // add user to firebase    
                 await signup(email.current.value, password.current.value)    

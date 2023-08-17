@@ -3,6 +3,7 @@ import {PermMedia, Label, Room, EmojiEmotions , Cancel} from "@mui/icons-materia
 import { AuthContext } from "../../context/AuthContext";
 import { useContext, useRef, useState } from "react";
 import axios from "axios";
+import { axiosInstance } from "../../config"
 import { useAuth, uploadPost } from "../../firebase";
 export default function Share() {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -30,7 +31,7 @@ export default function Share() {
             }
         }
         // upload newPost info to mongoDB
-        await axios.post("/posts", newPost);
+        await axiosInstance.post("/posts", newPost);
         window.location.reload();
     }
     

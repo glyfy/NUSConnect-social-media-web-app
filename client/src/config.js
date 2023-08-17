@@ -1,9 +1,10 @@
 import axios from "axios";
 
-// root index.js cors, socket index.js, client package json proxy
+// Create a new Axios instance with custom configuration
+const axiosInstance = axios.create({
+  baseURL: 'https://nusconnect.onrender.com/',
+  // You can add more configuration options here
+});
 
-// axios.defaults.baseURL = "https://nusconnectm2.herokuapp.com/api/"
-// axios.defaults.baseURL = "http://localhost:5000/api/"; 
- 
-// axios.defaults.baseURL = "https://nusconnect-backend.vercel.app"
+export default axiosInstance;
 
