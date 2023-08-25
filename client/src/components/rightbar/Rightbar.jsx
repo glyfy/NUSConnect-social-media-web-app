@@ -92,6 +92,7 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
         userID: currentUser._id,
         profilePicture: pfpURL
       });
+      window.location.reload()
     }
 
 
