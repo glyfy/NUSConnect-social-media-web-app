@@ -41,7 +41,7 @@ export default function Feed({username, searchQuery}) {
     const {user: currentUser} = useContext(AuthContext);
     useEffect(() => {
       const getUsers = async () => { //get all users that match the search query
-        const res = await axios.get("/users/search/" + searchQuery);
+        const res = await axiosInstance.get("/users/search/" + searchQuery);
         const filtered_users = res.data.filter(user => user._id !== currentUser._id); //filter out currentUser
         setUsers(filtered_users);
         // console.log("useffect is being called")
