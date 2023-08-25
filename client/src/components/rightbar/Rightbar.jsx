@@ -26,7 +26,7 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
     const getFriends = async () => {
       try{
         // console.log(user)
-        const friendList = await axios("/users/friends/" + user._id);
+        const friendList = await axiosInstance("/users/friends/" + user._id);
         setFriends(friendList.data);
       } catch(err){
         console.log(err);
