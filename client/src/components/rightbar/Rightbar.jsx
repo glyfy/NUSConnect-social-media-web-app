@@ -56,12 +56,12 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
     // console.log(user);
     try{
       if(followed){
-        await axiosInstance.put("/users/"+ user._id + "/unfollow", {
+        await axios.put("/users/"+ user._id + "/unfollow", {
           userID: currentUser._id
         })
         dispatch({type:"UNFOLLOW", payload: user._id})
       } else {
-        await axiosInstance.put("/users/"+ user._id + "/follow", {
+        await axios.put("/users/"+ user._id + "/follow", {
           userID: currentUser._id
         })
         dispatch({type:"FOLLOW", payload: user._id})
@@ -88,7 +88,7 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
       // upload photo to firebase
       const pfpURL = await uploadPFP(photo, firebaseUser, setLoading);
       // upload URL to mongoDB
-      await axiosInstance.put("/users/"+ user._id, { 
+      await axios.put("/users/"+ user._id, { 
         userID: currentUser._id,
         profilePicture: pfpURL
       });

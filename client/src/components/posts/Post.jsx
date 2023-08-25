@@ -25,7 +25,7 @@ export default function Post({post}) {
 
     useEffect(() => { //set the user for this post
         const fetchUser = async () => { //async function can only be declared inside main function
-          const res = await axiosInstance.get(`/users/?userID=${post.userID}`);
+          const res = await axios.get(`/users/?userID=${post.userID}`);
           setUser(res.data);
         };
         fetchUser();
@@ -34,7 +34,7 @@ export default function Post({post}) {
 
     const likeHandler = () => {
         try {
-            axiosInstance.put("/posts/" + post._id + "/like", { userID: currentUser._id })
+            axios.put("/posts/" + post._id + "/like", { userID: currentUser._id })
         } catch(err){
             console.log(err)
         }

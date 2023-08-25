@@ -31,7 +31,7 @@ export default function Share() {
             }
         }
         // upload newPost info to mongoDB
-        await axiosInstance.post("/posts", newPost);
+        await axios.post("/posts", newPost);
         window.location.reload();
     }
     
