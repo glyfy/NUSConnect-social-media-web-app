@@ -10,7 +10,6 @@ export default function Share() {
     const {user} = useContext(AuthContext);
     const desc = useRef(); //text that user wants to share
     const [file, setFile] = useState(null);
-    const [loading, setLoading] = useState(false);
     const  firebaseUser = useAuth();
 
     const handleUpload = async (e) => { // upload photo to firebase

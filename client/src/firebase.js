@@ -46,34 +46,30 @@ export function useAuth() { // hook generates a firebase user object and updates
 }
 
 // Storage
-export async function uploadPost(file, currentUser, setLoading) {
+export async function uploadPost(file, currentUser) {
   console.log(file);
+  // generate unique URL for file
   const fileRef = ref(storage, currentUser.uid + file.name);
-  // upload fileref to mongoDB under posts
-  setLoading(true);
-  
+  // upload file to that URL location in firebase storage
   const snapshot = await uploadBytes(fileRef, file);
+  // obtain photo URL
   const photoURL = await getDownloadURL(fileRef);
-  console.log(photoURL)
   updateProfile(currentUser, {photoURL});
   
-  setLoading(false);
   alert("Uploaded file!");
   return photoURL;
 }
 
-export async function uploadPFP(file, currentUser, setLoading) {
+export async function uploadPFP(file, currentUser) {
   console.log(file);
+  // generate unique URL for file
   const fileRef = ref(storage, currentUser.uid + file.name);
-  // upload fileref to mongoDB
-  setLoading(true);
-  
+  // upload file to that URL location in firebase storage
   const snapshot = await uploadBytes(fileRef, file);
+  // obtain photo URL
   const photoURL = await getDownloadURL(fileRef);
-
   updateProfile(currentUser, {photoURL});
   
-  setLoading(false);
   alert("Uploaded file!");
   return photoURL;
 }
