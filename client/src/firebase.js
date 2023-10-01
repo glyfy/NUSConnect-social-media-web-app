@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytes, listAll, deleteObject } from "firebase/storage";
 import axios from "axios";
 
 // Your web app's Firebase configuration
@@ -46,32 +46,39 @@ export function useAuth() { // hook generates a firebase user object and updates
 }
 
 // Storage
-export async function uploadPost(file, currentUser, setLoading) {
-  console.log(file);
-  const fileRef = ref(storage, currentUser.uid + file.name);
-  // upload fileref to mongoDB under posts
-  setLoading(true);
-  
-  const snapshot = await uploadBytes(fileRef, file);
-  const photoURL = await getDownloadURL(fileRef);
-  console.log(photoURL)
-  updateProfile(currentUser, {photoURL});
-  
-  setLoading(false);
-  alert("Uploaded file!");
-  return photoURL;
-}
-
-export async function uploadPFP(file, currentUser, setLoading) {
-  console.log(file);
-  const fileRef = ref(storage, currentUser.uid + file.name);
+export async function uploadPost(file, currUID, setLoading) {
+  const img_folder_ref = ref(storage, `${currUID}/post_images`)
+  const path = `${currUID}/post_images/${file.name}${Date.now()}`
+  const fileRef = ref(storage, path);
   // upload fileref to mongoDB
   setLoading(true);
   
   const snapshot = await uploadBytes(fileRef, file);
   const photoURL = await getDownloadURL(fileRef);
 
-  updateProfile(currentUser, {photoURL});
+  // updateProfile(currentUser, {photoURL});
+  
+  setLoading(false);
+  alert("Uploaded file!");
+  return photoURL;
+}
+
+export async function uploadPFP(file, currUID, setLoading) {
+  const pfp_folder_ref = ref(storage, `${currUID}/profilepic`)
+  const current_pfp = await listAll(pfp_folder_ref)
+  current_pfp.items.forEach(async element => {
+    await deleteObject(element)
+  });
+  
+  const path = `${currUID}/profilepic/${file.name}`
+  const fileRef = ref(storage, path);
+  // upload fileref to mongoDB
+  setLoading(true);
+  
+  const snapshot = await uploadBytes(fileRef, file);
+  const photoURL = await getDownloadURL(fileRef);
+
+  // updateProfile(currentUser, {photoURL});
   
   setLoading(false);
   alert("Uploaded file!");

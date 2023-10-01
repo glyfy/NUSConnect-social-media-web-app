@@ -9,7 +9,7 @@ import { useContext } from "react";
 function Home() {
 
     const {user} = useContext(AuthContext);
-
+    // console.log(user)
     return(
         <>
             <Topbar/>

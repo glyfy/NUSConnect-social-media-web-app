@@ -15,13 +15,12 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [friends, setFriends] = useState([]);
   const {user: currentUser, dispatch} = useContext(AuthContext);
-  console.log(user)
-  // console.log(currentUser)
   const [followed,  setFollowed] = useState(false);
   const [city, setCity] = useState("");
   const [course, setCourse] = useState("");
   const [status, setStatus] = useState("");
 
+  console.log(currentUser)
   useEffect(()=> { //obtain all of user's friends 
     const getFriends = async () => {
       try{
@@ -73,7 +72,7 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
   }
 
   const ProfileRightBar = () => {
-    const firebaseUser = useAuth();
+    // const firebaseUser = useAuth();
     const [photo, setPhoto] = useState(null);
     const [loading, setLoading] = useState(false);
     const [photoURL, setPhotoURL] = useState("https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png");
@@ -86,12 +85,16 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
   
     const handleUpload = async(e) =>  { 
       // upload photo to firebase
-      const pfpURL = await uploadPFP(photo, firebaseUser, setLoading);
+      const pfpURL = await uploadPFP(photo, user._id, setLoading);
+      console.log(pfpURL)
       // upload URL to mongoDB
       await axios.put("/users/"+ user._id, { 
-        userID: currentUser._id,
+        userID: currentUser._id,  
         profilePicture: pfpURL
       });
+      dispatch({type:"UPDATE_PFP", payload: pfpURL})
+      window.location.reload()
+      console.log(currentUser)
     }
 
 

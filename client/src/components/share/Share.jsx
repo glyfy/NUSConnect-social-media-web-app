@@ -1,22 +1,22 @@
 import "./share.css";
 import {PermMedia, Label, Room, EmojiEmotions , Cancel} from "@mui/icons-material"
 import { AuthContext } from "../../context/AuthContext";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { axiosInstance } from "../../config"
 import { useAuth, uploadPost } from "../../firebase";
 export default function Share() {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-    const {user} = useContext(AuthContext);
+    const {user: currentUser} = useContext(AuthContext);
     const desc = useRef(); //text that user wants to share
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
-    const  firebaseUser = useAuth();
-
+    const [user, setUser] = useState(null)
+    // const  firebaseUser = useAuth();
     const handleUpload = async (e) => { // upload photo to firebase
         e.preventDefault();
         const newPost = {
-            userID: user._id,
+            userID: currentUser._id,
             desc: desc.current.value //uses the reference JSX element
         };
         if(file){ // if file is uploaded
@@ -24,8 +24,8 @@ export default function Share() {
             const fileName = Date.now() + file.name;
             newPost.img = fileName;
             try{
-                const fileRef = await uploadPost(file, firebaseUser, setLoading);
-                newPost.downloadURL = fileRef;
+                const photoURL = await uploadPost(file, currentUser._id, setLoading);
+                newPost.downloadURL = photoURL;
             } catch(err) {
                 console.log(err);
             }
@@ -34,21 +34,29 @@ export default function Share() {
         await axios.post("/posts", newPost);
         window.location.reload();
     }
-    
+    useEffect(() => { //set the user for the share.jsx (to keep profile picture updated)
+        const fetchUser = async () => { //async function can only be declared inside main function
+          const res = await axios.get(`/users/?userID=${currentUser._id}`);
+          setUser(res.data);
+        };
+        fetchUser();
+      }, [currentUser.profilePicture] //second argument lets you choose what variable change trigger the effect
+    ) 
+
     return (
     <div className="share">
         <div className="shareWrapper">
             <div className="shareTop">
                 <img    
                 src={
-                firebaseUser?.photoURL
-                    ? firebaseUser?.photoURL
+                user?.profilePicture
+                    ? user?.profilePicture
                     : PF + "noProfilePic.jpg"
                 }  
                 alt="" 
                 className="shareProfileImg"/>
                 <input 
-                    placeholder = {"What's on your mind " + user.username + "?"} 
+                    placeholder = {"What's on your mind " + user?.username + "?"} 
                     className = "shareInput" 
                     ref = {desc}    
                 />

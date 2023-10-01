@@ -16,6 +16,8 @@ router.put("/:id", async (req, res) => {
             }
         } 
         try { //update user info
+            // delete ref from firebase storage
+            // 
             const user = await User.findByIdAndUpdate(req.params.id, {
                 $set: req.body, //update all the fields in the database to mongoDB
             });

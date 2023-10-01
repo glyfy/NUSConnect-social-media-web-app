@@ -16,7 +16,7 @@ export default function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        await login(email.current.value, password.current.value);//update firebase to login user
+        // await login(email.current.value, password.current.value);//update firebase to login user
         const res = await loginCall( //updates the context
         { 
             email: email.current.value, 

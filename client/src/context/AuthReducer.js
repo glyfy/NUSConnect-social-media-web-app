@@ -53,7 +53,17 @@ const AuthReducer = (state, action) => {
                     relationship: action.payload.status
                 }
             }
+
+        case "UPDATE_PFP":
+            return {
+                ...state, 
+                user: {
+                    ...state.user,
+                    profilePicture : action.payload.profilePicture
+                }
+            }
         }
+
 };
 
 export default AuthReducer;

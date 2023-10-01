@@ -32,3 +32,8 @@ export const UpdateProfile = (newDetails) => ({
     type:"UPDATE_PROFILE",
     payload: newDetails
 })
+
+export const UpdateProfilePic = (pfpURL) => ({
+    type:"UPDATE_PFP",
+    payload: pfpURL
+})
