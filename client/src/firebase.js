@@ -47,10 +47,10 @@ export function useAuth() { // hook generates a firebase user object and updates
 
 // Storage
 export async function uploadPost(file, user) {
-  const img_folder_ref = ref(storage, `${user.username}${user._id}/post_images`)
-  const path = `${user._id}/post_images/${file.name}${Date.now()}`
+  // const img_folder_ref = ref(storage, `${user.username}${user._id}/post_images`)
+  const path = `${user.username}${user._id}/post_images/${file.name}${Date.now()}`
   const fileRef = ref(storage, path);
-  // upload fileref to mongoDB
+  // upload fileref to mongoDBf
   
   const snapshot = await uploadBytes(fileRef, file);
   const photoURL = await getDownloadURL(fileRef);
@@ -67,7 +67,7 @@ export async function uploadPFP(file, user) {
     await deleteObject(element)
   });
   
-  const path = `${user._id}/profilepic/${file.name}`
+  const path = `${user.username}${user._id}/profilepic/${file.name}`
   const fileRef = ref(storage, path);
   // upload fileref to mongoDB
   
