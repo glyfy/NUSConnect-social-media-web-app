@@ -46,30 +46,39 @@ export function useAuth() { // hook generates a firebase user object and updates
 }
 
 // Storage
-export async function uploadPost(file, currentUser) {
-  console.log(file);
-  // generate unique URL for file
-  const fileRef = ref(storage, currentUser.uid + file.name);
-  // upload file to that URL location in firebase storage
-  const snapshot = await uploadBytes(fileRef, file);
-  // obtain photo URL
-  const photoURL = await getDownloadURL(fileRef);
-  updateProfile(currentUser, {photoURL});
+export async function uploadPost(file, currUID) {
+  const img_folder_ref = ref(storage, `${currUID}/post_images`)
+  const path = `${currUID}/post_images/${file.name}${Date.now()}`
+  const fileRef = ref(storage, path);
+  // upload fileref to mongoDB
+  setLoading(true);
   
+  const snapshot = await uploadBytes(fileRef, file);
+  const photoURL = await getDownloadURL(fileRef);
+
+  // updateProfile(currentUser, {photoURL});
   alert("Uploaded file!");
   return photoURL;
 }
 
-export async function uploadPFP(file, currentUser) {
-  console.log(file);
-  // generate unique URL for file
-  const fileRef = ref(storage, currentUser.uid + file.name);
-  // upload file to that URL location in firebase storage
-  const snapshot = await uploadBytes(fileRef, file);
-  // obtain photo URL
-  const photoURL = await getDownloadURL(fileRef);
-  updateProfile(currentUser, {photoURL});
+export async function uploadPFP(file, currUID) {
+  const pfp_folder_ref = ref(storage, `${currUID}/profilepic`)
+  const current_pfp = await listAll(pfp_folder_ref)
+  current_pfp.items.forEach(async element => {
+    await deleteObject(element)
+  });
   
+  const path = `${currUID}/profilepic/${file.name}`
+  const fileRef = ref(storage, path);
+  // upload fileref to mongoDB
+  setLoading(true);
+  
+  const snapshot = await uploadBytes(fileRef, file);
+  const photoURL = await getDownloadURL(fileRef);
+
+  // updateProfile(currentUser, {photoURL});
+  
+  setLoading(false);
   alert("Uploaded file!");
   return photoURL;
 }

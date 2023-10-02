@@ -15,8 +15,6 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [friends, setFriends] = useState([]);
   const {user: currentUser, dispatch} = useContext(AuthContext);
-  console.log(user)
-  // console.log(currentUser)
   const [followed,  setFollowed] = useState(false);
   const [city, setCity] = useState("");
   const [course, setCourse] = useState("");
@@ -86,13 +84,15 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
   
     const handleUpload = async(e) =>  { 
       // upload photo to firebase
-      const pfpURL = await uploadPFP(photo, firebaseUser, setLoading);
+      const pfpURL = await uploadPFP(photo, user._id);
+      // console.log(pfpURL)
       // upload URL to mongoDB
       await axiosInstance.put("/users/"+ user._id, { 
-        userID: currentUser._id,
+        userID: currentUser._id,  
         profilePicture: pfpURL
       });
       window.location.reload()
+      console.log(currentUser)
     }
 
 

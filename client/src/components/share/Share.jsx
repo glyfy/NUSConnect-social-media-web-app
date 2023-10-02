@@ -7,15 +7,17 @@ import { axiosInstance } from "../../config"
 import { useAuth, uploadPost } from "../../firebase";
 export default function Share() {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-    const {user} = useContext(AuthContext);
+    const {user:currentUser} = useContext(AuthContext);
     const desc = useRef(); //text that user wants to share
     const [file, setFile] = useState(null);
-    const  firebaseUser = useAuth();
+    const [user, setUser] = useState(null)
+
+    // const  firebaseUser = useAuth();
 
     const handleUpload = async (e) => { // upload photo to firebase
         e.preventDefault();
         const newPost = {
-            userID: user._id,
+            userID: currentUser._id,
             desc: desc.current.value //uses the reference JSX element
         };
         if(file){ // if file is uploaded
@@ -23,8 +25,8 @@ export default function Share() {
             const fileName = Date.now() + file.name;
             newPost.img = fileName;
             try{
-                const fileRef = await uploadPost(file, firebaseUser, setLoading);
-                newPost.downloadURL = fileRef;
+                const photoURL = await uploadPost(file, currentUser._id)
+                newPost.downloadURL = photoURL;
             } catch(err) {
                 console.log(err);
             }
@@ -33,6 +35,15 @@ export default function Share() {
         await axiosInstance.post("/posts", newPost);
         window.location.reload();
     }
+
+    useEffect(() => { //set the user for the share.jsx (to keep profile picture updated)
+        const fetchUser = async () => { //async function can only be declared inside main function
+          const res = await axios.get(`/users/?userID=${currentUser._id}`);
+          setUser(res.data);
+        };
+        fetchUser();
+      }, [currentUser.profilePicture] //second argument lets you choose what variable change trigger the effect
+    ) 
     
     return (
     <div className="share">
@@ -40,8 +51,8 @@ export default function Share() {
             <div className="shareTop">
                 <img    
                 src={
-                firebaseUser?.photoURL
-                    ? firebaseUser?.photoURL
+                user?.photoURL
+                    ? user?.photoURL
                     : PF + "noProfilePic.jpg"
                 }  
                 alt="" 

@@ -6,7 +6,7 @@ import { AuthContext } from "../../context/AuthContext";
 import {logOut} from "../../apiCalls";
 import { logout, useAuth } from "../../firebase";
 function Topbar() {
-    const {user, dispatch} = useContext(AuthContext);
+    const {user: currentUser, dispatch} = useContext(AuthContext);
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const searchInput = useRef();
     const history = useHistory();
