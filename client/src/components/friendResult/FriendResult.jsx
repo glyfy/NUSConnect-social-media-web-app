@@ -16,7 +16,7 @@ export default function FriendResult({ user }) {
         <div className="searchResultWrapper">
           <div className="searchResultTop">
             <div className="searchResultTopLeft">
-              <Link to={"profile/" + user.username}>
+              <Link to={"/profile/" + user.username}>
                 <img
                   src={
                     user.profilePicture
