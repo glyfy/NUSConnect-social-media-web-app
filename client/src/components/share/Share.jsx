@@ -51,14 +51,14 @@ export default function Share() {
             <div className="shareTop">
                 <img    
                 src={
-                user?.photoURL
-                    ? user?.photoURL
+                user?.profilePicture
+                    ? user?.profilePicture
                     : PF + "noProfilePic.jpg"
                 }  
                 alt="" 
                 className="shareProfileImg"/>
                 <input 
-                    placeholder = {"What's on your mind " + user.username + "?"} 
+                    placeholder = {"What's on your mind " + user?.username + "?"} 
                     className = "shareInput" 
                     ref = {desc}    
                 />
