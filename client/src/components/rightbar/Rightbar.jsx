@@ -117,8 +117,9 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
               onChange={handleChange}
           />
         </label>
+        <button disabled={loading || !photo} onClick={handleUpload}>Upload</button>
       )}
-      <button disabled={loading || !photo} onClick={handleUpload}>Upload</button>
+
       
       {user.username === currentUser.username && <EditProfile/>}
 
