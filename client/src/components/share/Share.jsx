@@ -2,7 +2,6 @@ import "./share.css";
 import {PermMedia, Label, Room, EmojiEmotions , Cancel} from "@mui/icons-material"
 import { AuthContext } from "../../context/AuthContext";
 import { useContext, useRef, useState, useEffect } from "react";
-import axios from "axios";
 import { axiosInstance } from "../../config"
 import { useAuth, uploadPost } from "../../firebase";
 export default function Share() {
@@ -38,7 +37,7 @@ export default function Share() {
 
     useEffect(() => { //set the user for the share.jsx (to keep profile picture updated)
         const fetchUser = async () => { //async function can only be declared inside main function
-          const res = await axios.get(`/users/?userID=${currentUser._id}`);
+          const res = await axiosInstance.get(`/users/?userID=${currentUser._id}`);
           setUser(res.data);
         };
         fetchUser();
