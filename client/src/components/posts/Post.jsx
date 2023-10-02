@@ -14,7 +14,7 @@ export default function Post({post}) {
     const [user, setUser] = useState({});
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const {user: currentUser, dispatch} = useContext(AuthContext);
-    const firebaseUser = useAuth();
+    // const firebaseUser = useAuth();
 
     
     useEffect(() => { //ensures that setIsLiked is updated to correct status after post is rendered

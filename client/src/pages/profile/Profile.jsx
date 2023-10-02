@@ -13,7 +13,7 @@ export default function Profile() {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const [user, setUser] = useState({});
     const username = useParams().username;
-    const firebaseUser = useAuth();
+    // const firebaseUser = useAuth();
 
     useEffect(() => { //action that occurs after you render the page
         const fetchUser = async () => { // async function can only be declared inside main function

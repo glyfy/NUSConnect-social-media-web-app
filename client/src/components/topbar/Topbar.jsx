@@ -12,11 +12,11 @@ function Topbar() {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const searchInput = useRef();
     const history = useHistory();
-    const firebaseUser = useAuth();
+    // const firebaseUser = useAuth();
     const [user, setUser] = useState(null)
 
     const handleLogOut = async () => {
-        await logout();
+        // await logout();
         logOut(dispatch); //update context to set user to null
         window.location.reload(); //refresh page
     }

@@ -21,17 +21,17 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const storage = getStorage();
 
-export function signup(email, password) {
-  return createUserWithEmailAndPassword(auth, email, password);
-}
+// export function signup(email, password) {
+//   return createUserWithEmailAndPassword(auth, email, password);
+// }
 
-export function login(email, password) {
-  return signInWithEmailAndPassword(auth, email, password);
-}
+// export function login(email, password) {
+//   return signInWithEmailAndPassword(auth, email, password);
+// }
 
-export function logout() {
-  return signOut(auth);
-}
+// export function logout() {
+//   return signOut(auth);
+// }
 
 // Custom Hook
 export function useAuth() { // hook generates a firebase user object and updates it when it detects change

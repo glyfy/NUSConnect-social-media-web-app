@@ -31,7 +31,7 @@ export default function Register() {
                 const res = await axiosInstance.post("/auth/register", user);     
                 history.push("/login");
                 // add user to firebase    
-                await signup(email.current.value, password.current.value)    
+                // await signup(email.current.value, password.current.value)    
 
             } catch(err){
                 console.log(err);
