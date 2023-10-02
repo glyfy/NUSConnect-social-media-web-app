@@ -107,7 +107,9 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
         </button>
       )}
       
-      <label htmlFor="files" className="uploadPhoto">
+      {user.username == currentUser.username &&
+      <div>  
+        <label htmlFor="files" className="uploadPhoto">
         <FileUpload className="shareIcon"/>
         <span className="shareOptionText">Upload profile picture</span>
         {/* allows files to be selected and only the first file is used */}
@@ -118,8 +120,10 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
             accept=".png,.jpeg,.jpg" 
             onChange={handleChange}
         />
+      
       </label>
       <button disabled={loading || !photo} onClick={handleUpload}>Upload</button>
+      </div>}
       
       {user.username === currentUser.username && <EditProfile/>}
 
