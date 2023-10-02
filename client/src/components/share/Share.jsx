@@ -1,7 +1,7 @@
 import "./share.css";
 import {PermMedia, Label, Room, EmojiEmotions , Cancel} from "@mui/icons-material"
 import { AuthContext } from "../../context/AuthContext";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { axiosInstance } from "../../config"
 import { useAuth, uploadPost } from "../../firebase";

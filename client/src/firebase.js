@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytes, listAll, deleteObject } from "firebase/storage";
 import axios from "axios";
 
 // Your web app's Firebase configuration
@@ -71,14 +71,12 @@ export async function uploadPFP(file, currUID) {
   const path = `${currUID}/profilepic/${file.name}`
   const fileRef = ref(storage, path);
   // upload fileref to mongoDB
-  setLoading(true);
   
   const snapshot = await uploadBytes(fileRef, file);
   const photoURL = await getDownloadURL(fileRef);
 
   // updateProfile(currentUser, {photoURL});
   
-  setLoading(false);
   alert("Uploaded file!");
   return photoURL;
 }
