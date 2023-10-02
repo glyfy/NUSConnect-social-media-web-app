@@ -24,7 +24,7 @@ export default function Share() {
             const fileName = Date.now() + file.name;
             newPost.img = fileName;
             try{
-                const photoURL = await uploadPost(file, currentUser._id)
+                const photoURL = await uploadPost(file, currentUser)
                 newPost.downloadURL = photoURL;
             } catch(err) {
                 console.log(err);

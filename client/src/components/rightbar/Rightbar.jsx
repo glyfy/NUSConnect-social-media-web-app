@@ -84,7 +84,7 @@ export default function Rightbar({user}) { //user refers to user that rightbar i
   
     const handleUpload = async(e) =>  { 
       // upload photo to firebase
-      const pfpURL = await uploadPFP(photo, user._id);
+      const pfpURL = await uploadPFP(photo, user);
       // console.log(pfpURL)
       // upload URL to mongoDB
       await axiosInstance.put("/users/"+ user._id, { 
