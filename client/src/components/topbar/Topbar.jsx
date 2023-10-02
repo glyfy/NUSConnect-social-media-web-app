@@ -5,6 +5,7 @@ import { useContext, useRef, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import {logOut} from "../../apiCalls";
 import { logout, useAuth } from "../../firebase";
+import { axiosInstance } from "../../config"
 
 function Topbar() {
     const {user: currentUser, dispatch} = useContext(AuthContext);
@@ -26,7 +27,7 @@ function Topbar() {
 
     useEffect(() => { //set the user for the share.jsx (to keep profile picture updated)
         const fetchUser = async () => { //async function can only be declared inside main function
-          const res = await axios.get(`/users/?userID=${currentUser._id}`);
+          const res = await axiosInstance.get(`/users/?userID=${currentUser._id}`);
           setUser(res.data);
         };
         fetchUser();
