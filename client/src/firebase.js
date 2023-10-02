@@ -51,7 +51,6 @@ export async function uploadPost(file, currUID) {
   const path = `${currUID}/post_images/${file.name}${Date.now()}`
   const fileRef = ref(storage, path);
   // upload fileref to mongoDB
-  setLoading(true);
   
   const snapshot = await uploadBytes(fileRef, file);
   const photoURL = await getDownloadURL(fileRef);

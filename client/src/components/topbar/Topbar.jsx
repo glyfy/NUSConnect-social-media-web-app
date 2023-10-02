@@ -1,7 +1,7 @@
 import "./topbar.css";
 import {Search, Person, Chat, Notifications} from '@mui/icons-material';
 import {Link, useHistory} from "react-router-dom";
-import { useContext, useRef } from "react";
+import { useContext, useRef, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import {logOut} from "../../apiCalls";
 import { logout, useAuth } from "../../firebase";
